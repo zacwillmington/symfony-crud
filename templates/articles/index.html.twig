@@ -2,8 +2,7 @@
 {% block title %}Symfony Crud App{% endblock %}
 
 {% block body %}
-{# Add if articles below #}
-  {% if false %}
+  {% if articles %}
     <table id="articles" class="table table-striped">
       <thead>
         <tr>
@@ -14,11 +13,11 @@
       <tbody>
         {% for article in articles %}
           <tr>
-            <td>{{ article.title }}</td>
+            <td>{{ article }}</td>
             <td>
-              <a href="/article/{{ article.id }}" class="btn btn-dark">Show</a>
-              <a href="/article/edit/{{ article.id }}" class="btn btn-light">Edit</a>
-              <a href="#" class="btn btn-danger delete-article" data-id="{{ article.id }}">Delete</a>
+              {# <a href="/article/{{ article.id }}" class="btn btn-dark">Show</a> #}
+              {# <a href="/article/edit/{{ article.id }}" class="btn btn-light">Edit</a> #}
+              {# <a href="#" class="btn btn-danger delete-article" data-id="{{ article.id }}">Delete</a> #}
             </td>
           </tr>
         {% endfor %}
