@@ -4,10 +4,10 @@ if(articles) {
     articles.addEventListener('click', (e) => {
         if(e.target.className === "btn btn-danger delete-article"){
             const id = e.target.getAttribute('data-id');
-            fetch(`/article/delete/${id}`,{
+            fetch(`/symfony-crud/public/article/delete/${id}`,{
                 method: 'DELETE'
             }).then(res => {
-                window.location.reload();
+                return window.location.reload();
             });
         }
     });

@@ -94,19 +94,23 @@ class ArticleController extends Controller {
      }
 
       /**
-     * @Route("/article/delete/{1i}", name="delete_article")
+     * @Route("/article/delete/{id}", name="delete_article")
      * @Method({"DELETE"})
      */
 
      public function delete(Request $request, $id) {
+        $test = "test";
+        print_r($test);
+        print_r($id);
         $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+        print_r($article);
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($article);
         $entityManager->flush();
 
         $response = new Response();
-        $response->send();
+        return $response->send();
 
      }
 
