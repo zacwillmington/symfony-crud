@@ -60,7 +60,7 @@ class ArticleController extends Controller {
 
             return $this->redirectToRoute('Home');
         }
-        
+
         return $this->render('articles/new.html.twig', array('form' => $form->createView()));
      }
 
@@ -93,5 +93,21 @@ class ArticleController extends Controller {
          return new Response("Saved and Article with the id of ".$article->getId());
      }
 
+      /**
+     * @Route("/article/delete/{1i}", name="delete_article")
+     * @Method({"DELETE"})
+     */
+
+     public function delete(Request $request, $id) {
+        $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($article);
+        $entityManager->flush();
+
+        $response = new Response();
+        $response->send();
+
+     }
 
 }
