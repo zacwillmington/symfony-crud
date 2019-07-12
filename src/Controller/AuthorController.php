@@ -2,6 +2,9 @@
 namespace App\Controller;
 
 use App\Entity\Author;
+use Psr\Log\LoggerInterface;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,13 +69,16 @@ class AuthorController extends Controller {
      * @Method({"GET", "POST"})
      */
 
-    public function edit(Request $request, $id) {
+    public function edit(Request $request, $id, LoggerInterface $logger) {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
 
-        $form = $this->createFormBuilder($author)->add('title', 
+        // $this->log( level: Logger::EMERGENCY, message: 'emg mss');
+
+        $logger->info("error");
+        $form = $this->createFormBuilder($author)->add('name', 
             TextType::class, 
             array('attr' => array('class' => 'form-control'))
-        )->add('body', 
+        )->add('name', 
             TextareaType::class,
             array('required' => false, 
             'attr' => array('class', 'form-control'))
@@ -114,9 +120,8 @@ class AuthorController extends Controller {
          $entityManager = $this->getDoctrine()->getManager();
 
          $author = new Author();
-         $author->setTitle('Author Two');
-         $author->setBody('This is the body');
-
+         $author->setName('Author Two');
+    
          $entityManager->persist($author);
 
          $entityManager->flush();
@@ -130,8 +135,6 @@ class AuthorController extends Controller {
      */
 
      public function delete(Request $request, $id) {
-        $test = "test";
-        print_r($test);
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
         print_r($author);
 

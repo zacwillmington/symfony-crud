@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Psr\Log\LoggerInterface;
 
 class ArticleController extends Controller {
 
@@ -22,9 +23,8 @@ class ArticleController extends Controller {
      */
 
     public function index() {
-
         $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
-
+        
         return $this->render('articles/index.html.twig', array("articles" => $articles));
     }
 
@@ -33,7 +33,10 @@ class ArticleController extends Controller {
      * @Method({"GET", "POST"})
      */
 
-     public function new(Request $request) {
+     public function new(Request $request, LoggerInterface $logger) {
+
+        $logger->info("Testing Logger");
+
         $article = new Article;
         $form = $this->createFormBuilder($article)->add('title', 
             TextType::class, 
