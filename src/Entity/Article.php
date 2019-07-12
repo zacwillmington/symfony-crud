@@ -59,6 +59,6 @@ class Article
     }
 
     public function setBody($body) {
-        $this->body = $body;
+        return $this->body = $body;
     }
 }

@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class AuthorController extends Controller {
 
     /**
-     * @Route("/", name="Home")
+     * @Route("/authors", name="Author")
      * @Method({"GET"})
      */
 
@@ -35,12 +35,9 @@ class AuthorController extends Controller {
 
      public function new(Request $request) {
         $author = new Author;
-        $form = $this->createFormBuilder($author)->add('title', 
-            TextType::class, 
-            array('attr' => array('class' => 'form-control'))
-        )->add('body', 
-            TextareaType::class,
-            array('required' => false, 
+        $form = $this->createFormBuilder($author)->add('name', 
+            TextType::class,
+            array('required' => true, 
             'attr' => array('class', 'form-control'))
         )->add('save', 
             SubmitType::class,
@@ -135,7 +132,6 @@ class AuthorController extends Controller {
      public function delete(Request $request, $id) {
         $test = "test";
         print_r($test);
-        print_r($id);
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
         print_r($author);
 
