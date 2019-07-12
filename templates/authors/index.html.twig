@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+{% block title %}Symfony Crud App{% endblock %}
+
+{% block body %}
+  {% if authors %}
+    <table id="authors" class="table table-striped">
+      <thead>
+        <tr>
+          <th>Author Title</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for author in authors %}
+          <tr>
+            <td>{{ author.name }}</td>
+            <td>
+              <a href="/symfony-crud/public/author/{{ author.id }}" class="btn btn-dark">Show</a>
+              <a href="/symfony-crud/public/author/edit/{{ author.id }}" class="btn btn-light">Edit</a>
+              <a href="#" class="btn btn-danger delete-author" data-id="{{ author.id }}">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No authors to display</p>
+  {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+  <script src="./js/main.js"></script>
+{% endblock %}

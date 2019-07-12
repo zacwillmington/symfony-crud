@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\Article;
+use App\Entity\Author;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
-class ArticleController extends Controller {
+class AuthorController extends Controller {
 
     /**
      * @Route("/", name="Home")
@@ -23,19 +23,19 @@ class ArticleController extends Controller {
 
     public function index() {
 
-        $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
+        $authors = $this->getDoctrine()->getRepository(Author::class)->findAll();
 
-        return $this->render('articles/index.html.twig', array("articles" => $articles));
+        return $this->render('authors/index.html.twig', array("authors" => $authors));
     }
 
      /**
-     * @Route("/article/new", name="new_article")
+     * @Route("/author/new", name="new_author")
      * @Method({"GET", "POST"})
      */
 
      public function new(Request $request) {
-        $article = new Article;
-        $form = $this->createFormBuilder($article)->add('title', 
+        $author = new Author;
+        $form = $this->createFormBuilder($author)->add('title', 
             TextType::class, 
             array('attr' => array('class' => 'form-control'))
         )->add('body', 
@@ -52,27 +52,27 @@ class ArticleController extends Controller {
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $article = $form->getData();
+            $author = $form->getData();
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($article);
+            $entityManager->persist($author);
             $entityManager->flush();
 
             return $this->redirectToRoute('Home');
         }
 
-        return $this->render('articles/new.html.twig', array('form' => $form->createView()));
+        return $this->render('authors/new.html.twig', array('form' => $form->createView()));
      }
 
       /**
-     * @Route("/article/edit/{id}", name="edit_article")
+     * @Route("/author/edit/{id}", name="edit_author")
      * @Method({"GET", "POST"})
      */
 
     public function edit(Request $request, $id) {
-        $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+        $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
 
-        $form = $this->createFormBuilder($article)->add('title', 
+        $form = $this->createFormBuilder($author)->add('title', 
             TextType::class, 
             array('attr' => array('class' => 'form-control'))
         )->add('body', 
@@ -95,40 +95,40 @@ class ArticleController extends Controller {
             return $this->redirectToRoute('Home');
         }
 
-        return $this->render('articles/edit.html.twig', array('form' => $form->createView()));
+        return $this->render('authors/edit.html.twig', array('form' => $form->createView()));
      }
 
       /**
-     * @Route("/article/{id}", name="article_show")
+     * @Route("/author/{id}", name="author_show")
      */
 
     public function show($id) {
-        $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+        $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
 
-        return $this->render('articles/show.html.twig', array("article" => $article));
+        return $this->render('authors/show.html.twig', array("author" => $author));
      }
 
 
     /**
-     * @Route("/article/save")
+     * @Route("/author/save")
      */
 
      public function save() {
          $entityManager = $this->getDoctrine()->getManager();
 
-         $article = new Article();
-         $article->setTitle('Article Two');
-         $article->setBody('This is the body');
+         $author = new Author();
+         $author->setTitle('Author Two');
+         $author->setBody('This is the body');
 
-         $entityManager->persist($article);
+         $entityManager->persist($author);
 
          $entityManager->flush();
 
-         return new Response("Saved and Article with the id of ".$article->getId());
+         return new Response("Saved and Author with the id of ".$author->getId());
      }
 
       /**
-     * @Route("/article/delete/{id}", name="delete_article")
+     * @Route("/author/delete/{id}", name="delete_author")
      * @Method({"DELETE"})
      */
 
@@ -136,11 +136,11 @@ class ArticleController extends Controller {
         $test = "test";
         print_r($test);
         print_r($id);
-        $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
-        print_r($article);
+        $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
+        print_r($author);
 
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($article);
+        $entityManager->remove($author);
         $entityManager->flush();
 
         $response = new Response();
