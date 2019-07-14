@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Author;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Psr\Log\LoggerInterface;
@@ -33,9 +35,7 @@ class ArticleController extends Controller {
      */
 
      public function new(Request $request, LoggerInterface $logger) {
-
-        $logger->info("Testing Logger");
-
+        
         $article = new Article;
         $form = $this->createFormBuilder($article)->add('title', 
             TextType::class, 
@@ -44,7 +44,10 @@ class ArticleController extends Controller {
             TextareaType::class,
             array('required' => false, 
             'attr' => array('class', 'form-control'))
-        )->add('save', 
+        )->add('Author', EntityType::class, [
+                'class' => Author::class,
+                'choice_label' => 'name'
+            ])->add('save', 
             SubmitType::class,
             array('label' => 'Create',
                 'attr' => array('class' => 'btn btn-primary mt-3')
@@ -62,6 +65,8 @@ class ArticleController extends Controller {
 
             return $this->redirectToRoute('Home');
         }
+
+        
 
         return $this->render('articles/new.html.twig', array('form' => $form->createView()));
      }
