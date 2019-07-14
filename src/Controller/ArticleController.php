@@ -35,7 +35,7 @@ class ArticleController extends Controller {
      */
 
      public function new(Request $request, LoggerInterface $logger) {
-        
+      
         $article = new Article;
         $form = $this->createFormBuilder($article)->add('title', 
             TextType::class, 
@@ -116,6 +116,7 @@ class ArticleController extends Controller {
      }
 
 
+    //  Delete this controller
     /**
      * @Route("/article/save")
      */
@@ -140,11 +141,7 @@ class ArticleController extends Controller {
      */
 
      public function delete(Request $request, $id) {
-        $test = "test";
-        print_r($test);
-        print_r($id);
         $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
-        print_r($article);
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($article);
