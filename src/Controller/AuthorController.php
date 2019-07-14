@@ -72,8 +72,6 @@ class AuthorController extends Controller {
     public function edit(Request $request, $id, LoggerInterface $logger) {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
 
-        // $this->log( level: Logger::EMERGENCY, message: 'emg mss');
-
         $logger->info("error");
         $form = $this->createFormBuilder($author)->add('name', 
             TextType::class, 

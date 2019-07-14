@@ -22,9 +22,8 @@ class ArticleController extends Controller {
      * @Method({"GET"})
      */
 
-    public function index() {
+    public function index(LoggerInterface $logger) {
         $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
-        
         return $this->render('articles/index.html.twig', array("articles" => $articles));
     }
 
