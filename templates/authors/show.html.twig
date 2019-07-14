@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h1>{{ author.name }}</h1>
+    
+    <h2>Articles</h2>
+        {% for article in authorsArticles %}
+            <h3>{{ article.title }}</h3>
+            <a href="#">Read</a>
+        {% endfor %}
+    <a href='/symfony-crud/public'>Go Back</a>
+{% endblock %}

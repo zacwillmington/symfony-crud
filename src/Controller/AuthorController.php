@@ -103,10 +103,15 @@ class AuthorController extends Controller {
      * @Route("/author/{id}", name="author_show")
      */
 
-    public function show($id) {
+    public function show($id, LoggerInterface $logger) {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
 
-        return $this->render('authors/show.html.twig', array("author" => $author));
+        $authorsArticles = $author->getArticles();
+
+        $logger->debug('author', [$author]);
+        $logger->debug('authors Articles', $authorsArticles);
+
+        return $this->render('authors/show.html.twig', array("author" => $author, 'authorsArticles' => $authorsArticles));
      }
 
 
