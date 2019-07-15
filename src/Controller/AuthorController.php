@@ -2,9 +2,10 @@
 namespace App\Controller;
 
 use App\Entity\Author;
+use App\Entity\Article;
+
 use Psr\Log\LoggerInterface;
 use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class AuthorController extends Controller {
 
     /**
-     * @Route("/authors", name="Author")
+     * @Route("/author", name="Author")
      * @Method({"GET"})
      */
 
@@ -101,6 +102,7 @@ class AuthorController extends Controller {
 
       /**
      * @Route("/author/{id}", name="author_show")
+     *  @Method({"GET"})
      */
 
     public function show($id, LoggerInterface $logger) {
@@ -108,8 +110,10 @@ class AuthorController extends Controller {
 
         $authorsArticles = $author->getArticles();
 
+
+        $logger->debug('authors Articles', [$authorsArticles]);
         $logger->debug('author', [$author]);
-        $logger->debug('authors Articles', $authorsArticles);
+
 
         return $this->render('authors/show.html.twig', array("author" => $author, 'authorsArticles' => $authorsArticles));
      }
@@ -137,10 +141,9 @@ class AuthorController extends Controller {
      * @Method({"DELETE"})
      */
 
-     public function delete(Request $request, $id) {
+     public function delete(Request $request, LoggerInterface $logger, $id) {
+                
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
-        print_r($author);
-
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($author);
         $entityManager->flush();

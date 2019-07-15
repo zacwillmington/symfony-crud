@@ -7,12 +7,19 @@ use Doctrine\Common\Collections\Collection;
 
 use Doctrine\ORM\Mapping as ORM;
 
-  /**
-    * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="article")
-    */
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\AuthorRepository")
+ */
 
 class Author
 {
+
+   /**
+    * @ORM\OneToMany(targetEntity="Article", mappedBy="author")
+    */
+    private $articles;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -38,19 +45,16 @@ class Author
         return $this->name = $name;
     }
 
-
-//    Articles methods
-    
-    private $articles;
-
     public function __construct() {
-        return $this->articles = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
+
+    /**
+     * @return Collection|Articles[]
+     */
 
     public function getArticles(): Collection {
-        return $this-articles;
+        return $this->articles;
     }
-
-    // Add methods for addArticle and removeArticle below
 
 }

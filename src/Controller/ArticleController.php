@@ -25,7 +25,9 @@ class ArticleController extends Controller {
      */
 
     public function index(LoggerInterface $logger) {
-        $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
+            $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
+
+
         return $this->render('articles/index.html.twig', array("articles" => $articles));
     }
 
@@ -34,36 +36,37 @@ class ArticleController extends Controller {
      * @Method({"GET", "POST"})
      */
 
-     public function new(Request $request, LoggerInterface $logger) {
+     public function new(LoggerInterface $logger, Request $request) {
       
         $article = new Article;
+
+        $logger->debug('Blank article', [$article]);
         $form = $this->createFormBuilder($article)->add('title', 
             TextType::class, 
             array('attr' => array('class' => 'form-control'))
-        )->add('body', 
+        )->add('Author', EntityType::class, [
+              'class' => Author::class,
+               'choice_label' => 'name'
+        ])->add('body', 
             TextareaType::class,
             array('required' => false, 
             'attr' => array('class', 'form-control'))
-        )->add('Author', EntityType::class, [
-                'class' => Author::class,
-                'choice_label' => 'name'
-            ])->add('save', 
+        )->add('save', 
             SubmitType::class,
             array('label' => 'Create',
                 'attr' => array('class' => 'btn btn-primary mt-3')
             )
         )->getForm();
-
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()) {
             $article = $form->getData();
+            $logger->debug('article', [$article]);
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($article);
             $entityManager->flush();
 
-            return $this->redirectToRoute('Home');
+            return $this->render('articles/new.html.twig', array('form' => $form->createView()));
         }
 
         
@@ -78,7 +81,7 @@ class ArticleController extends Controller {
 
     public function edit(Request $request, $id) {
         $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
-
+        
         $form = $this->createFormBuilder($article)->add('title', 
             TextType::class, 
             array('attr' => array('class' => 'form-control'))
