@@ -50,11 +50,11 @@ class Author
     }
 
     /**
-     * @return Collection|Articles[]
+     * @return Collection|articles[]
      */
 
-    public function getArticles(): Collection {
-        return $this->articles;
-    }
+    // public function getArticles(): Collection {
+        // return $this->articles;
+    // }
 
 }

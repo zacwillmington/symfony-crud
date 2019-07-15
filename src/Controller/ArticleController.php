@@ -66,11 +66,9 @@ class ArticleController extends Controller {
             $entityManager->persist($article);
             $entityManager->flush();
 
-            return $this->render('articles/new.html.twig', array('form' => $form->createView()));
+            return $this->render('articles/show.html.twig', array('article' => $article));
         }
-
         
-
         return $this->render('articles/new.html.twig', array('form' => $form->createView()));
      }
 

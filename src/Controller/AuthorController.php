@@ -108,12 +108,20 @@ class AuthorController extends Controller {
     public function show($id, LoggerInterface $logger) {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
 
-        $authorsArticles = $author->getArticles();
+        // BD Query getArticles
+        $em = $this->getDoctrine()->getManager();
 
+        $RAW_QUERY = 'SELECT * FROM article WHERE author_id = :id';
+        
+        $statement = $em->getConnection()->prepare($RAW_QUERY);
+        
+        // Set parameters 
+        $authorId = $author->getId();
+        
+        $statement->bindValue('id', $authorId );
+        $statement->execute();
 
-        $logger->debug('authors Articles', [$authorsArticles]);
-        $logger->debug('author', [$author]);
-
+        $authorsArticles = $statement->fetchAll();
 
         return $this->render('authors/show.html.twig', array("author" => $author, 'authorsArticles' => $authorsArticles));
      }
