@@ -27,7 +27,6 @@ class ArticleController extends Controller {
     public function index(LoggerInterface $logger) {
             $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
 
-
         return $this->render('articles/index.html.twig', array("articles" => $articles));
     }
 
@@ -68,7 +67,7 @@ class ArticleController extends Controller {
 
             return $this->render('articles/show.html.twig', array('article' => $article));
         }
-        
+
         return $this->render('articles/new.html.twig', array('form' => $form->createView()));
      }
 
@@ -112,7 +111,6 @@ class ArticleController extends Controller {
 
     public function show($id) {
         $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
-
         return $this->render('articles/show.html.twig', array("article" => $article));
      }
 
