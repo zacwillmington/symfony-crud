@@ -1,1 +1,0 @@
-add debugger to computer

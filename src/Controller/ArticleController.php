@@ -86,7 +86,10 @@ class ArticleController extends Controller {
             TextareaType::class,
             array('required' => false, 
             'attr' => array('class', 'form-control'))
-        )->add('save', 
+        )->add('Author', EntityType::class, [
+            'class' => Author::class,
+             'choice_label' => 'name'
+        ])->add('save', 
             SubmitType::class,
             array('label' => 'Update',
                 'attr' => array('class' => 'btn btn-primary mt-3')
