@@ -1,6 +1,6 @@
 <?php
 namespace App\Controller;
-
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Author;
 use App\Entity\Article;
 
@@ -9,9 +9,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -55,7 +53,7 @@ class AuthorController extends AbstractController {
             $entityManager->persist($author);
             $entityManager->flush();
 
-            return $this->redirectToRoute('Home');
+            return $this->redirectToRoute('Author');
         }
 
         return $this->render('authors/new.html.twig', array('form' => $form->createView()));
@@ -123,15 +121,10 @@ class AuthorController extends AbstractController {
      * @Route("/author/delete/{id}", name="delete_author")
      */
 
-     public function delete(Request $request, $id, LoggerInterface $logger) {
-
-        $logger->debug('test');
-        dump($test = 'test');
+     public function delete(Request $request, $id) {
+        
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
 
-        $logger->debug("author", $author);
-        print_r($author);
-        
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($author);
         $entityManager->flush();

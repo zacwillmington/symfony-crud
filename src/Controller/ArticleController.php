@@ -1,14 +1,12 @@
 <?php
 namespace App\Controller;
-
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Article;
 use App\Entity\Author;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route; // This(Annotations) means that you can define the routes in this file. There is no need to add the routes to the routing.ymal file.
-// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;  
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -33,7 +31,7 @@ class ArticleController extends AbstractController {
      * @Route("/article/new", name="new_article")
      */
 
-     public function new(LoggerInterface $logger, Request $request) {
+     public function new(Request $request) {
       
         $article = new Article;
 
