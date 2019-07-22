@@ -5,28 +5,25 @@ use App\Entity\Author;
 use App\Entity\Article;
 
 use Psr\Log\LoggerInterface;
-use Monolog\Logger;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route; // This(Annotations) means that you can define the routes in this file. There is no need to add the routes to the routing.ymal file.
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; //Adds @method type to route line 12  
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+// use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
-class AuthorController extends Controller {
+class AuthorController extends AbstractController {
 
     /**
      * @Route("/author", name="Author")
-     * @Method({"GET"})
      */
 
-    public function index() {
-
+    public function index(LoggerInterface $logger) {
         $authors = $this->getDoctrine()->getRepository(Author::class)->findAll();
 
         return $this->render('authors/index.html.twig', array("authors" => $authors));
@@ -34,10 +31,9 @@ class AuthorController extends Controller {
 
      /**
      * @Route("/author/new", name="new_author")
-     * @Method({"GET", "POST"})
      */
 
-     public function new(Request $request) {
+     public function new(Request $request, LoggerInterface $logger) {
         $author = new Author;
         $form = $this->createFormBuilder($author)->add('name', 
             TextType::class,
@@ -65,15 +61,13 @@ class AuthorController extends Controller {
         return $this->render('authors/new.html.twig', array('form' => $form->createView()));
      }
 
-      /**
-     * @Route("/author/edit/{id}", name="edit_author")
-     * @Method({"GET", "POST"})
+    /**
+     * @Route("/author/edit/{id}", name="edit_author") 
      */
 
     public function edit(Request $request, $id, LoggerInterface $logger) {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
-
-        $logger->info("error");
+        
         $form = $this->createFormBuilder($author)->add('name', 
             TextType::class, 
             array('attr' => array('class' => 'form-control'))
@@ -100,14 +94,12 @@ class AuthorController extends Controller {
         return $this->render('authors/edit.html.twig', array('form' => $form->createView()));
      }
 
-      /**
+    /**
      * @Route("/author/{id}", name="author_show")
-     *  @Method({"GET"})
      */
 
     public function show($id, LoggerInterface $logger) {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
-
         // BD Query getArticles
         $em = $this->getDoctrine()->getManager();
 
@@ -128,30 +120,18 @@ class AuthorController extends Controller {
 
 
     /**
-     * @Route("/author/save")
-     */
-
-     public function save() {
-         $entityManager = $this->getDoctrine()->getManager();
-
-         $author = new Author();
-         $author->setName('Author Two');
-    
-         $entityManager->persist($author);
-
-         $entityManager->flush();
-
-         return new Response("Saved and Author with the id of ".$author->getId());
-     }
-
-      /**
      * @Route("/author/delete/{id}", name="delete_author")
-     * @Method({"DELETE"})
      */
 
-     public function delete(Request $request, LoggerInterface $logger, $id) {
-                
+     public function delete(Request $request, $id, LoggerInterface $logger) {
+
+        $logger->debug('test');
+        dump($test = 'test');
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
+
+        $logger->debug("author", $author);
+        print_r($author);
+        
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($author);
         $entityManager->flush();
@@ -162,3 +142,4 @@ class AuthorController extends Controller {
      }
 
 }
+?>
